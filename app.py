@@ -1,7 +1,7 @@
-from flask import Flask,render_template,request,redirect,url_for,make_response,send_from_directory #pip install Flask
-from flask_sqlalchemy import SQLAlchemy #pip install Flask-SQLAlchemy
-#pip install virtualenv
-import random,string,os
+from flask import Flask,render_template,request,redirect,url_for,make_response
+from flask_sqlalchemy import SQLAlchemy
+import random,string
+from sendEmail import sendMail
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
@@ -26,8 +26,7 @@ def complainSubmission():
     complain = Complains(name=name,email=email,phone=phone,station=station,complain=complaint,status=0,token=token)
     db.session.add(complain)
     db.session.commit()
-
-    print(Complains.query.all())
+    sendMail(email,name,token)
     return render_template("token.html",token=token)
 
 @app.route("/checkstatus")
@@ -74,7 +73,6 @@ def updateStatus():
     complain = Complains.query.filter_by(token=token).first()
     complain.status=status
     db.session.commit()
-    print(complain.status)
     return ""
 
 # Utility Function
