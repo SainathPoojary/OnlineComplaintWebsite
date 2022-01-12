@@ -1,35 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Police Complain Registration</title>
+    <title>Online Complain</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="/static/script.js"></script>
 </head>
-<body>
-  <header class="text-gray-600 body-font">
-    <div class="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
-      <a class="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-10 h-10 text-white p-2 bg-indigo-500 rounded-full" viewBox="0 0 24 24">
-          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
-        </svg>
-        <a href="/" class="ml-3 text-xl font-medium">Online Police Complain</a>
-      </a>
-      <nav class="md:ml-auto flex flex-wrap items-center text-base justify-center">
-        <a href="/checkstatus" class="mr-5 hover:text-gray-900">Check Status</a>
-        <a href="/complain" class="mr-5 hover:text-gray-900">File a Complain</a>
-      </nav>
-     {% if login %}
-      <button onclick="location.href='/dashboard';" class="inline-flex items-center bg-indigo-500 text-white border-0 py-1 px-3 focus:outline-none hover:bg-indigo-600 rounded text-base mt-4 md:mt-0">Dashboard
-        <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 ml-1" viewBox="0 0 24 24">
-          <path d="M5 12h14M12 5l7 7-7 7"></path>
-        </svg>
-      </button>
-      {% endif %}
-    </div>
-  </header>
 
+<body>
+      {% include 'components/header.html' %}
       <!-- Hero -->
       <section class="text-gray-600 body-font">
         <div class="container mx-auto flex px-5 py-24 md:flex-row flex-col items-center">
@@ -43,7 +25,7 @@
             </div>
           </div>
           <div class="lg:max-w-lg lg:w-full md:w-1/2 w-5/6">
-            <img class="object-cover object-center rounded" alt="hero" src="/static/Mumbai_Police_logo.png">
+            <img class="object-cover object-center rounded" alt="hero" src="/static/img/Mumbai_Police_logo.png">
           </div>
         </div>
       </section>

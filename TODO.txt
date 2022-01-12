@@ -1,0 +1,2 @@
+1. Logout button only for admin
+2. Dashboard link for only admin

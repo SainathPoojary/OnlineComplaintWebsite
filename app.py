@@ -1,12 +1,11 @@
-from flask import Flask,render_template,request,redirect,url_for,make_response #pip install Flask
+from flask import Flask,render_template,request,redirect,url_for,make_response,send_from_directory #pip install Flask
 from flask_sqlalchemy import SQLAlchemy #pip install Flask-SQLAlchemy
 #pip install virtualenv
-import random,string
+import random,string,os
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 db = SQLAlchemy(app)
-
 @app.route("/")
 def hello_world():
     return render_template("index.html")
@@ -41,12 +40,9 @@ def check():
     complain = Complains.query.filter_by(token=token).first()
     return render_template("status.html",status=complain.status)
 
-
 @app.route("/admin")
 def admin():
-    username = request.cookies.get('username')
-    admin = Admin.query.filter_by(username=username).first()
-    if(admin!=None):
+    if(isAdmin()):
         return redirect(url_for('dashboard'))
     return render_template("admin.html")
 
@@ -64,9 +60,7 @@ def login():
 
 @app.route("/dashboard")
 def dashboard():
-    username = request.cookies.get('username')
-    admin = Admin.query.filter_by(username=username).first()
-    if(admin!=None):
+    if(isAdmin()):
         data = Complains.query.filter_by(status=0).all()
         return render_template("dashboard.html",data=data)
     else:
@@ -83,7 +77,12 @@ def updateStatus():
     print(complain.status)
     return ""
 
+# Utility Function
+def isAdmin():
+    username = request.cookies.get('username')
+    return True if Admin.query.filter_by(username=username).first() !=None else False
 
+app.jinja_env.globals.update(isAdmin=isAdmin)
 
 # Database
 class Complains(db.Model):
@@ -105,7 +104,6 @@ class Admin(db.Model):
     
     def __repr__(self):
         return f' ({self.username} - {self.password})'
-
 
 if __name__=="__main__":
     app.run(host="0.0.0.0",port=80,debug=True)
