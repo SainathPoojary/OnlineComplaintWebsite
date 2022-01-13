@@ -1,3 +1,4 @@
+import threading
 from flask import Flask,render_template,request,redirect,url_for,make_response
 from flask_sqlalchemy import SQLAlchemy
 import random,string
@@ -26,7 +27,8 @@ def complainSubmission():
     complain = Complains(name=name,email=email,phone=phone,station=station,complain=complaint,status=0,token=token)
     db.session.add(complain)
     db.session.commit()
-    sendMail(email,name,token)
+    t1 = threading.Thread(target=sendMail,args=(email,name,token,0))
+    t1.start()
     return render_template("token.html",token=token)
 
 @app.route("/checkstatus")
@@ -73,6 +75,8 @@ def updateStatus():
     complain = Complains.query.filter_by(token=token).first()
     complain.status=status
     db.session.commit()
+    t1 = threading.Thread(target=sendMail,args=(complain.email,complain.name,token,status))
+    t1.start()
     return ""
 
 # Utility Function
