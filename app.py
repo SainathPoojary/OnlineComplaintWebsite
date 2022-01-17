@@ -7,26 +7,38 @@ from sendEmail import sendMail
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 db = SQLAlchemy(app)
+
+# Returns the landing page of the website
 @app.route("/")
 def hello_world():
     return render_template("index.html")
 
+# Returns the File a Complain page 
 @app.route("/complain")
 def complain():
     return render_template("complain.html")
 
+# After clicking submit button on file a complain page
+# All the data is send to /complainSubmission end point in POST method
+# The Funtions performs:
+#   Generate a Random Token number
+#   Insert the all data into Database
+#   Send a mail to the user in seprate thread
 @app.route("/complainSubmission",methods=['POST'])
 def complainSubmission():
+    # Fetching the data from POST request
     name = request.form['name']  
     email =request.form['email']  
     phone =request.form['phone']  
     station =request.form['station']  
     complaint =request.form['complain']
+    # Generating a random token number
     token = ''.join(random.choices(string.ascii_uppercase + string.digits, k=20))
     # Inserting data into database  
     complain = Complains(name=name,email=email,phone=phone,station=station,complain=complaint,status=0,token=token)
     db.session.add(complain)
     db.session.commit()
+    # Sending a mail using a thread
     t1 = threading.Thread(target=sendMail,args=(email,name,token,0))
     t1.start()
     return render_template("token.html",token=token)
