@@ -30,12 +30,13 @@ def complainSubmission():
     name = request.form['name']  
     email =request.form['email']  
     phone =request.form['phone']  
+    aadhar =request.form['aadhar']  
     station =request.form['station']  
     complaint =request.form['complain']
     # Generating a random token number
     token = ''.join(random.choices(string.ascii_uppercase + string.digits, k=20))
     # Inserting data into database  
-    complain = Complains(name=name,email=email,phone=phone,station=station,complain=complaint,status=0,token=token)
+    complain = Complains(name=name,email=email,phone=phone,aadhar=aadhar,station=station,complain=complaint,status=0,token=token)
     db.session.add(complain)
     db.session.commit()
     # Sending a mail using a thread
@@ -104,6 +105,7 @@ class Complains(db.Model):
     name = db.Column(db.String(80), nullable=False)
     email = db.Column(db.String(120), nullable=False)
     phone = db.Column(db.String(120), nullable=False)
+    aadhar = db.Column(db.Integer, nullable=False)
     station = db.Column(db.String(120), nullable=False)
     complain = db.Column(db.Text, nullable=False)
     status = db.Column(db.Integer,nullable=False)
