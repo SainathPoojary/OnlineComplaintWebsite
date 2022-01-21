@@ -1,10 +1,10 @@
-import smtplib
+import smtplib,os
 from email.mime.text import MIMEText
 
 
 def sendMail(email,name,token,op):
     EMAIL = "onlinecmplnt@gmail.com"
-    PASSWORD = "aarqkdsjueehmyhx"
+    PASSWORD = os.environ.get("emailPassword")
     if(op==0):
         subject = 'Your Complaint was registered successfully'
         html = f"""
