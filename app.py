@@ -2,7 +2,7 @@ import threading
 from flask import Flask,render_template,request,redirect,url_for,make_response
 from flask_sqlalchemy import SQLAlchemy
 import random,string
-from sendEmail import sendMail
+from notify import sendMail
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
