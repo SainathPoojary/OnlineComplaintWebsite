@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Online Complaint</title>
+    <title>Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="/static/script.js"></script>
 </head>
@@ -19,14 +19,12 @@
     <!-- table -->
     <section class="text-gray-600 body-font">
         <div class="container px-5 py-10 lg:py-24 mx-auto">
-            <div class="flex flex-col text-center w-full mb-20">
-                <h1 class="sm:text-4xl text-3xl font-medium title-font mb-2 text-gray-900">Complaints</h1>
-                <p class="lg:w-full mx-auto leading-relaxed text-base">Banh mi cornhole echo park skateboard authentic
-                    crucifix neutra tilde lyft biodiesel artisan direct trade mumblecore 3 wolf moon twee</p>
+            <div class="flex flex-col text-center w-full mb-10">
+                <h1 class="sm:text-4xl text-3xl font-medium title-font mb-2 text-gray-900">Dashboard</h1>
 
             </div>
             <select class="mx-auto px-8 py-2 mb-4 font-medium text-gray-900 text-sm bg-gray-100 rounded-tl rounded-bl"
-                name="changeStatus" id="changeStatus" onclick="changeStatus()">
+                name="changeStatus" id="changeStatus" onchange="changeStatus()">
                 <option value="0">Under Review</option>
                 <option value="1">Aprroved</option>
                 <option value="-1">Rejected</option>
