@@ -5,15 +5,24 @@ from twilio.rest import Client
 # Twilio Credentials
 account_sid = os.environ.get("TWILIO_ACCOUNT_SID")
 auth_token = os.environ.get("TWILIO_AUTH_TOKEN")
-client = Client(account_sid, auth_token)
 
 # SMTP Credentials
 EMAIL = "onlinecmplnt@gmail.com"
 PASSWORD = os.environ.get("emailPassword")
 
+
+
+# # Twilio Credentials
+# account_sid = "ACeb5227bed4a38aa5b2e60a0f5141c919"
+# auth_token = "156e60a21e0cd7266bcae98a2d89d1eb"
+
+# # SMTP Credentials
+# EMAIL = "onlinecmplnt@gmail.com"
+# PASSWORD = "aarqkdsjueehmyhx"
+
 # Sends Mail using SMTP
 def sendMail(email,name,token,op):
-    
+    html,subject="",""
     if(op==0):
         subject = 'Your Complaint was registered successfully'
         html = f"""
@@ -32,7 +41,7 @@ def sendMail(email,name,token,op):
         subject = 'Your Complaint was Rejected!'
         html = f"""
         <p style="line-height: 1.7;">
-        Hey <b>Sainath</b>,<br>
+        Hey <b>{name}</b>,<br>
         Your complaint with token number <em style="color: #6366f1; background-color: rgb(216, 216, 216); padding: 2px;" >{token}</em> has been rejected ❌ do you to some reason <br>
         If you have any query you can contact us.
         <p>
@@ -43,7 +52,7 @@ def sendMail(email,name,token,op):
         subject = 'Your Complaint was Approved!'
         html=f"""
         <p style="line-height: 1.7;">
-            Hey <b>Sainath</b>,<br>
+            Hey <b>{name}</b>,<br>
             Your complaint with token number <em
                 style="color: #6366f1; background-color: rgb(216, 216, 216); padding: 2px;">{token}</em> has been
             approved. ✅ <br>
@@ -57,12 +66,11 @@ def sendMail(email,name,token,op):
         """
 
 
-
+    
     msg = MIMEText(html, 'html')
     msg['Subject'] = subject
     msg['FROM'] = EMAIL
     msg['TO']=email 
-
 
     with smtplib.SMTP_SSL('smtp.gmail.com',465) as server:
         server.login(EMAIL,PASSWORD)
@@ -72,20 +80,23 @@ def sendMail(email,name,token,op):
 
 # Sending SMS using Twilio API
 def sendSms(phoneNo,name,token,op):
-    if(op==0):
+    client = Client(account_sid, auth_token)
+    if(op=="0"):
         msg=f" Hey {name}, We have Recived your Complaint. It will be reviewed by my our officer in 2-3 bussiness days.\nYou can check your Complaint status at below given link. Your Token number is {token}\nhttps://complaintregistration.herokuapp.com/checkstatus"
-    elif(op==-1):
+    elif(op=="-1"):
         msg=f" Hey {name}, Your complaint with token number {token} has been rejected ❌ do you to some reason. If you have any query you can contact us.\nhttps://complaintregistration.herokuapp.com"
-    elif(op==1):
+    elif(op=="1"):
         msg=f" Hey {name}, Your complaint with token number {token} has been approved ✅. Our officer will contact you as soon as possible. If you have any query you can contact us. If you have any query you can contact us.\nhttps://complaintregistration.herokuapp.com"
-        client.messages \
+        message = client.messages \
                 .create(
                      body=msg,
                      from_='+16075644358',
                      to=f'+91{phoneNo}'
                  )
+        print(message.status)
 
 # Notify will send both SMS and MAIL
-def notify(phoneNo,name,token,op):
-    sendMail(phoneNo,name,token,op)
+def notify(phoneNo,email,name,token,op):
+    sendMail(email,name,token,op)
     sendSms(phoneNo,name,token,op)
+

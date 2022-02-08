@@ -2,7 +2,7 @@ import threading
 from flask import Flask,render_template,request,redirect,url_for,make_response
 from flask_sqlalchemy import SQLAlchemy
 import random,string
-from notify import sendMail
+from notify import *
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
@@ -40,7 +40,7 @@ def complainSubmission():
     db.session.add(complain)
     db.session.commit()
     # Sending a mail using a thread
-    t1 = threading.Thread(target=sendMail,args=(email,name,token,0))
+    t1 = threading.Thread(target=notify,args=(phone,email,name,token,0))
     t1.start()
     return render_template("token.html",token=token)
 
@@ -88,7 +88,7 @@ def updateStatus():
     complain = Complains.query.filter_by(token=token).first()
     complain.status=status
     db.session.commit()
-    t1 = threading.Thread(target=sendMail,args=(complain.email,complain.name,token,status))
+    t1 = threading.Thread(target=notify,args=(complain.phone,complain.email,complain.name,token,status))
     t1.start()
     return ""
 
@@ -96,7 +96,6 @@ def updateStatus():
 def isAdmin():
     username = request.cookies.get('username')
     return True if Admin.query.filter_by(username=username).first() !=None else False
-
 app.jinja_env.globals.update(isAdmin=isAdmin)
 
 # Database
