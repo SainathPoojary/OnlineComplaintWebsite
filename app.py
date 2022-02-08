@@ -88,7 +88,7 @@ def updateStatus():
     complain = Complains.query.filter_by(token=token).first()
     complain.status=status
     db.session.commit()
-    t1 = threading.Thread(target=notify,args=(complain.phone,complain.email,complain.name,token,status))
+    t1 = threading.Thread(target=sendMail,args=(complain.email,complain.name,token,status))
     t1.start()
     return ""
 
