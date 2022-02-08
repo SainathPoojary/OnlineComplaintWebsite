@@ -75,7 +75,7 @@ def login():
 @app.route("/dashboard")
 def dashboard():
     if(isAdmin()):
-        data = Complains.query.filter_by(status=0).all()
+        data = Complains.query.filter_by().all()
         return render_template("dashboard.html",data=data)
     else:
         return redirect(url_for("admin"))

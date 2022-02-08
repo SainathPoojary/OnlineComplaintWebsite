@@ -13,8 +13,8 @@
 <body>
     <!-- nav bar -->
     {% with dashboard="text-indigo-500 font-semibold" %}
-        {% include 'components/header.html' %}
-    {% endwith %}   
+    {% include 'components/header.html' %}
+    {% endwith %}
 
     <!-- table -->
     <section class="text-gray-600 body-font">
@@ -23,9 +23,18 @@
                 <h1 class="sm:text-4xl text-3xl font-medium title-font mb-2 text-gray-900">Complaints</h1>
                 <p class="lg:w-full mx-auto leading-relaxed text-base">Banh mi cornhole echo park skateboard authentic
                     crucifix neutra tilde lyft biodiesel artisan direct trade mumblecore 3 wolf moon twee</p>
+
             </div>
+            <select class="mx-auto px-8 py-2 mb-4 font-medium text-gray-900 text-sm bg-gray-100 rounded-tl rounded-bl"
+                name="changeStatus" id="changeStatus" onclick="changeStatus()">
+                <option value="0">Under Review</option>
+                <option value="1">Aprroved</option>
+                <option value="-1">Rejected</option>
+            </select>
             <div class="lg:w-full w-full mx-auto overflow-auto">
+
                 <table class="table-auto w-full text-left whitespace-no-wrap">
+
                     <thead>
                         <tr>
                             <th
@@ -65,7 +74,7 @@
                     </thead>
                     <tbody>
                         {% for c in data %}
-                        <tr>
+                        <tr class="complain" data-status="{{c.status}}">
                             <td class="px-4 py-3">{{c.id}}</td>
                             <td class="px-4 py-3">{{c.name}}</td>
                             <td class="px-4 py-3">{{c.email}}</td>
@@ -99,14 +108,26 @@
         function update(token) {
             let status = document.querySelector('input[name="status"]:checked').value;
             const xhttp = new XMLHttpRequest();
-            xhttp.onload = function() {
+            xhttp.onload = function () {
                 location.reload()
                 console.log("Worked")
             }
             xhttp.open("GET", `updatestatus?token=${token}&status=${status}`);
             xhttp.send();
         }
-        // console.lo
+        changeStatus()
+        function changeStatus() {
+            let value = document.getElementById("changeStatus").value
+            let complains = document.getElementsByClassName("complain")
+            for (let i = 0; i < complains.length; i++) {
+                if (complains[i].getAttribute("data-status") !== value) {
+                    complains[i].style.display = "none"
+                }
+                else {
+                    complains[i].style.display = "table-row"
+                }
+            }
+        }
     </script>
 </body>
 
