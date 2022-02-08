@@ -10,16 +10,6 @@ auth_token = os.environ.get("TWILIO_AUTH_TOKEN")
 EMAIL = "onlinecmplnt@gmail.com"
 PASSWORD = os.environ.get("emailPassword")
 
-
-
-# # Twilio Credentials
-# account_sid = "ACeb5227bed4a38aa5b2e60a0f5141c919"
-# auth_token = "156e60a21e0cd7266bcae98a2d89d1eb"
-
-# # SMTP Credentials
-# EMAIL = "onlinecmplnt@gmail.com"
-# PASSWORD = "aarqkdsjueehmyhx"
-
 # Sends Mail using SMTP
 def sendMail(email,name,token,op):
     html,subject="",""
